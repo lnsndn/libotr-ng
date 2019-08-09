@@ -35,14 +35,15 @@ API otrng_result otrng_fingerprint_hash_to_human(char *human,
                                                  const unsigned char *hash) {
   int word, byte;
   char *p = human;
+  int p_chunk_size = 2, p_chunk_size_plus_null = p_chunk_size + 1;
 
   for (word = 0; word < 14; ++word) {
     for (byte = 0; byte < 4; ++byte) {
-      if (snprintf(p, OTRNG_FPRINT_HUMAN_LEN, "%02X",
+      if (snprintf(p, p_chunk_size_plus_null, "%02X",
                    (unsigned int)hash[word * 4 + byte]) < 0) {
         return OTRNG_ERROR;
       }
-      p += 2;
+      p += p_chunk_size;
     }
     *(p++) = ' ';
   }
